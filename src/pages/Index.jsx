@@ -3,10 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Edit2, Check } from "lucide-react";
+
 const Index = () => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
 
   const addTodo = () => {
     if (newTodo.trim() !== "") {
@@ -25,6 +28,22 @@ const Index = () => {
 
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  const startEditing = (id, text) => {
+    setEditingId(id);
+    setEditText(text);
+  };
+
+  const saveEdit = () => {
+    if (editText.trim() !== "") {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === editingId ? { ...todo, text: editText } : todo
+        )
+      );
+      setEditingId(null);
+    }
   };
 
   return (
@@ -53,28 +72,57 @@ const Index = () => {
                 key={todo.id}
                 className="flex items-center justify-between bg-secondary p-2 rounded"
               >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 flex-grow">
                   <Checkbox
                     checked={todo.completed}
                     onCheckedChange={() => toggleTodo(todo.id)}
                     id={`todo-${todo.id}`}
                   />
-                  <label
-                    htmlFor={`todo-${todo.id}`}
-                    className={`${
-                      todo.completed ? "line-through text-muted-foreground" : ""
-                    }`}
-                  >
-                    {todo.text}
-                  </label>
+                  {editingId === todo.id ? (
+                    <Input
+                      type="text"
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                      onKeyPress={(e) => e.key === "Enter" && saveEdit()}
+                      className="flex-grow"
+                    />
+                  ) : (
+                    <label
+                      htmlFor={`todo-${todo.id}`}
+                      className={`${
+                        todo.completed ? "line-through text-muted-foreground" : ""
+                      } flex-grow`}
+                    >
+                      {todo.text}
+                    </label>
+                  )}
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => deleteTodo(todo.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="flex space-x-1">
+                  {editingId === todo.id ? (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={saveEdit}
+                    >
+                      <Check className="h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => startEditing(todo.id, todo.text)}
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => deleteTodo(todo.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </li>
             ))}
           </ul>
