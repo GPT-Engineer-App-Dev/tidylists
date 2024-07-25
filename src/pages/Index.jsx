@@ -50,7 +50,7 @@ const Index = () => {
     <div className="container mx-auto p-4 max-w-md">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Todo App</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Todo or Not Todo: That is the Question!</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex space-x-2 mb-4">
