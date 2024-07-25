@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
-
 const Index = () => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
@@ -34,10 +32,6 @@ const Index = () => {
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">Todo App</CardTitle>
-          <nav className="flex justify-center space-x-4 mt-4">
-            <Link to="/" className="text-blue-500 hover:text-blue-700">Home</Link>
-            <Link to="/about" className="text-blue-500 hover:text-blue-700">About</Link>
-          </nav>
         </CardHeader>
         <CardContent>
           <div className="flex space-x-2 mb-4">
